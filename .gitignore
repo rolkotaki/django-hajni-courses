@@ -1,0 +1,10 @@
+.idea
+__pycache__
+env
+config.yml
+!.gitkeep
+docker/postgres_data
+.coverage
+htmlcov
+coverage.xml
+logs/*.log
