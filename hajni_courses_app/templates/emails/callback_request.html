@@ -1,0 +1,11 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktranslate with username=user.username last_name=user.last_name first_name=user.first_name phone_number=user.phone_number %}
+Szia!
+<br><br>
+{{ username }} ({{ last_name }}, {{ first_name }}) visszahívást kezdeményezett.<br>
+Telefonszám: {{ phone_number }}
+<br><br>
+Üdvözlettel.
+{% endblocktranslate %}
+{% endautoescape %}

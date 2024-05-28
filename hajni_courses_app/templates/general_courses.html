@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+{% load static %}
+{% load i18n %}
+{% load extra_filters %}
+
+<div class="div_course_header">
+    <table>
+        <tr>
+            <td>
+                <img src="{% static 'general_courses_image.png' %}">
+            </td>
+            <td>
+                <h2>{% trans 'IRODAI MUNKÁRA VÁLTANÉK' %}</h2>
+                <p>{% trans 'Cél: Számítógépes alapismeretek fejlesztése, bővítése meghatározott területen' %}</p>
+                <p>{% trans 'Feltétel: számítógépes alapismeretek' %}</p>
+                <p>{% trans 'A képzés során fontos az önálló gyakorlás.' %}</p>
+            </td>
+        </tr>
+    </table>
+    <h3>&#8681;{% trans 'HAMAROSAN INDULÓ KISCSOPORTOS ONLINE KÉPZÉSEK' %}&#8681;</h3>
+</div>
+
+<div id="content_wrapper">
+
+<div class="content content_courses">
+
+    {% for course in courses %}
+
+    <div class="course_box">
+        <a href="{% url 'course' slug=course.slug %}"><span>
+            <p class="course_box_name">{{ course.name|split_by_parenthesis|first }}</p>
+            <p class="course_box_duration">{{ course.duration }}</p>
+            <ul class="course_box_desc" style="list-style-type: '&#9786; ';">
+                {% for item in course.description|split_by_star %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        </span></a>
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</div>
+
+{% if page.paginator.num_pages > 1 %}
+<div class="pagination">
+    <span class="page_links">
+        {% if page.has_previous %}
+            <a class="page_link" href="?page=1">&laquo; {% trans 'első' %}</a>
+            <span>&middot;</span>
+        {% endif %}
+
+        {% for i in pages %}
+            {% if page.number == i %}
+                <span class="current_page">{{ page.number }}</span>
+            {% else %}
+                <a class="page_link" href="?page={{ i }}">{{ i }}</a>
+            {% endif %}
+            {% if page.paginator.num_pages != i or page.paginator.num_pages != page.number %}
+                <span>&middot;</span>
+            {% endif %}
+        {% endfor %}
+
+        {% if page.has_next %}
+            <a class="page_link" href="?page={{ page.paginator.num_pages }}">{% trans 'utolsó' %} &raquo;</a>
+        {% endif %}
+    </span>
+</div>
+{% endif %}
+
+{% endblock %}

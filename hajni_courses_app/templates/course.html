@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+{% load static %}
+{% load i18n %}
+{% load extra_filters %}
+
+<div id="content_wrapper">
+
+<div class="content content_course">
+
+    <div class="course">
+        <p class="course_name">{{ course.name }}</p>
+        <p class="course_desc">{{ course.duration }}</p>
+        <p class="course_price">{{ course.price }} Ft</p>
+        <p class="course_desc"><br>A képzés során a következőket fogod megtanulni:</p>
+        <ul class="course_box_desc" style="list-style-type: '&#9786; ';">
+                {% for item in course.description|split_by_star %}
+                    <li>{{ item }}</li>
+                {% endfor %}
+            </ul>
+        <p class="course_desc">{{ course.extra_info }}</p>
+        <div class="course_buttons">
+            <a class="a_button green_button {% if not user.is_authenticated %}disabled_button{% endif %}" href="{% url 'apply' slug=course.slug %}">
+                {% trans 'Jelentkezek' %}
+            </a>
+            <a class="a_button grey_button" href="{{ previous_url }}">{% trans 'Vissza' %}</a>
+        </div>
+        {% if not user.is_authenticated %}
+        <p class="italic">{% trans 'Log in to book!' %}</p>
+        {% endif %}
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+{% load i18n %}
+{% load extra_filters %}
+
+<div id="content_wrapper">
+
+<div class="content content_user_form">
+
+    <div class="content_form">
+
+        <p class="page_title">{% trans 'Regisztráció' %}</p>
+        <form class="user_form" method="POST" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }} {{ field | add_class:"user_form_text_input" }}
+                    {% if field.errors %}
+                    <ul class="error_list">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </p>
+            {% endfor %}
+
+            <div class="form_buttons">
+                <input class="a_button green_button" type="submit" value="{% trans 'Regisztrálok' %}" />
+            </div>
+        </form>
+
+        <div class="form_success_message">
+            {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    {{ message }}
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

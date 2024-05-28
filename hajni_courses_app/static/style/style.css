@@ -1,0 +1,429 @@
+html, body {
+  min-height: 100vh;
+  margin: 0px;
+  padding: 0px;
+  font-family: "Open Sans",sans-serif;
+}
+
+#container {
+  display: flex;
+  flex-flow: column;
+  max-width: 1024px;
+  margin: auto;
+  position: relative;
+  text-align: center;
+  min-height: 100vh;
+}
+
+#header {
+  top: 0px;
+  left: 0;
+  height: 60px;
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  margin: 0px;
+  padding: 0px;
+}
+
+#header_left {
+  margin-right: auto;
+  margin-left: 0px;
+  padding: 0px;
+}
+
+#header_right {
+  margin-right: 5px;
+}
+
+#header_left table, #header_left tr, #header_left td {
+  margin: 0px;
+  padding: 0px;
+}
+
+#logo_image {
+  width: auto;
+  height: 60px;
+  margin: 0px;
+  padding: 0px;
+  margin-top: 4px;  // *****
+}
+
+#logo_text {
+  margin-left: 20px;
+  font-family: copperplate;
+  font-weight: bold;
+  font-size: 24px;
+  text-align: center;
+}
+
+#topnav {
+  background-color: #1C6EA4;
+  overflow: hidden;
+  top: 60px;
+  left: 0;
+}
+
+#topnav a {
+  float: left;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+
+#topnav a:hover {
+  background-color: #70A7D1;
+  color: white;
+}
+
+#topnav .active_menu {
+  background-color: #70A7D1;
+  color: white;
+}
+
+#topnav .menu_item_right {
+  float: right;
+}
+
+.dropdown_button {
+  font-size: 17px;
+  border: none;
+  outline: none;
+  color: #f2f2f2;
+  padding: 14px 16px;
+  background-color: inherit;
+  margin: 0;
+}
+
+#user_dropdown a:hover, #user_dropdown:hover .dropdown_button {
+  background-color: #70A7D1;
+  color: white;
+}
+
+#user_dropdown_content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+#user_dropdown_content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+  font-size: 15px;
+}
+
+#user_dropdown_content p {
+  font-size: 15px;
+  height: 18px;
+  margin: 8px 3px 5px 3px;
+}
+
+#user_dropdown:hover #user_dropdown_content {
+  display: block;
+}
+
+#logout_button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black;
+  text-decoration: none;
+  text-align: left;
+  font-size: 15px;
+}
+
+#footer {
+  position: relative;
+  margin: 8px;
+  text-align: center;
+}
+
+#home_div {
+  margin: 20px auto 0px auto;
+}
+
+#home_div table {
+  margin: 0 auto;
+}
+
+#home_div table td {
+  padding: 0px 20px 0px 20px;
+}
+
+#img_photo {
+  width: 250px;
+  height: auto;
+}
+
+.div_course_header {
+  margin: 20px auto 0px auto;
+}
+
+.div_course_header table td{
+  padding: 0px 50px 0px 50px;
+}
+
+.div_course_header table{
+  max-width: 800px;
+}
+
+.div_course_header table td img {
+  padding: 0px 10px 0px 10px;
+  width: 200px;
+  height: auto;
+}
+
+#content_wrapper {
+  display: flex;
+  overflow: auto;
+  flex: auto;
+  margin: 5px 0px;
+}
+
+.content {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 20px;
+}
+
+.content_courses {
+  margin-top: 20px;
+}
+
+.course_box {
+  width: 220px;
+  min-height: 250px;
+  max-height: 320px;
+  padding: 5px;
+  margin: 5px;
+  border: 1px solid #DFE7ED;
+  border-radius: 0.4rem;
+  overflow: hidden;
+}
+
+.course_box:hover {
+  box-shadow: 0 0 10px 0 #007bff;
+}
+
+.course_box a {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.course_box_name {
+  font-weight: bold;
+  font-size: 16px;
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.course_box_duration {
+  text-align: center;
+}
+
+.course_box_desc {
+  text-align: left;
+}
+
+.course_box_desc li {
+  padding: 3px 0px;
+}
+
+.content_course, .content_apply, .content_user_form {
+  margin: 20px auto;
+  text-align: center;
+}
+
+.course {
+  width: 500px;
+  //height: 280px;
+  padding: 10px;
+}
+
+.course_name, .page_title {
+  font-weight: bold;
+  font-size: 20px;
+  text-align: left;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.course_price, .course_desc {
+  text-align: left;
+}
+
+.course_buttons {
+  display: block;
+  padding-top: 20px;
+}
+
+.a_button {
+  background-color: white;
+  color: black;
+  border: 2px solid black;
+  border-radius: 0.3rem;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 16px;
+}
+
+.a_button:hover, .a_button:active {
+  background-color: green;
+  color: white;
+}
+
+.content_form {
+  width: 280px;
+  padding: 10px;
+  text-align: left;
+}
+
+.content_apply_form {
+  width: 520px;
+}
+
+.form_buttons {
+  text-align: center;
+  min-width: 280px;
+  display: flex;
+  justify-content: center;
+}
+
+.form_buttons a {
+  margin-left: 5px;
+}
+
+.form_buttons input {
+  margin-left: 10px;
+}
+
+.apply_form {
+  //width: 520px;
+}
+
+.user_form {
+  min-width: 280px;
+}
+
+.user_form_text_input {
+  width: 260px;
+  padding: 0.375rem 0.75rem;
+  margin-top: 5px;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+}
+
+.text_input {
+  padding: 0.35rem 0.5rem;
+  margin-top: 5px;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #495057;
+  background-clip: padding-box;
+  border: 1.5px solid #ced4da;
+  border-radius: 0.25rem;
+  width: 160px;
+}
+
+.text_input {
+  width: 500px;
+  margin-bottom: 10px;
+}
+
+.user_form_text_input:focus, .text_input:focus {
+  outline: none;
+  box-shadow: 0 0 5px 0 #007bff;
+}
+
+.login_signup_errors {
+  color: red;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.error_list {
+  color: red;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.form_success_message {
+  color: green;
+  text-align: center;
+  padding-top: 20px;
+}
+
+.green_button {
+  background-color: #33b249;
+  color: white;
+  border: 2px solid #33b249;
+}
+
+.grey_button {
+  background-color: grey;
+  color: white;
+  border: 2px solid grey;
+}
+
+.green_button:hover, .green_button:active {
+  background-color: white;
+  color: #33b249;
+}
+
+.grey_button:hover, .grey_button:active {
+  background-color: white;
+  color: grey;
+}
+
+.disabled_button {
+  pointer-events: none;
+  opacity: 0.45;
+}
+
+#hi_username {
+  color: #495057;
+}
+
+.pagination {
+  position: relative;
+  margin: 10px auto 40px auto;
+  text-align: center;
+}
+
+.page_links {
+  position: relative;
+  margin: 20px auto 80px auto;
+  text-align: center;
+}
+
+.page_link {
+  text-decoration: none;
+  color: #1C6EA4;
+  font-size: 16px;
+  margin: auto;
+}
+
+.current_page {
+  color: #1C6EA4;
+  font-weight: bold;
+  font-size: 18px;
+}

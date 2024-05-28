@@ -11,6 +11,17 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+import os
+import sys
+from django.utils.translation import gettext_lazy as _
+from django.utils.log import AdminEmailHandler
+import logging.config
+
+# Whether the tests are being run
+TEST_MODE = len(sys.argv) > 1 and sys.argv[1] == 'test'
+
+from .utils import load_config
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -31,17 +42,20 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'hajni_courses_app',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -73,10 +87,18 @@ WSGI_APPLICATION = 'hajni_courses.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+db_config = load_config().get('postgresql_hajni_courses', {})
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get('DB_NAME', db_config.get('name', '')),
+        'USER': os.environ.get('DB_USER', db_config.get('user', '')),
+        'PASSWORD': os.environ.get('DB_PASSWORD', db_config.get('password', '')),
+        'HOST': os.environ.get('DB_HOST', db_config.get('host', '')),
+        'PORT': os.environ.get('DB_PORT', db_config.get('port', '')),
+        'TEST': {
+            'NAME': os.environ.get('DB_TEST_NAME', db_config.get('test_db_name', ''))
+        }
     }
 }
 
@@ -103,9 +125,11 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'hu'
 
 TIME_ZONE = 'UTC'
+
+USE_L10N = True
 
 USE_I18N = True
 
@@ -116,8 +140,79 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [
+    # BASE_DIR / "static",
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# custom settings
+
+SESSION_COOKIE_AGE = 604800  # 1 week
+SESSION_SAVE_EVERY_REQUEST = True
+
+AUTH_USER_MODEL = 'hajni_courses_app.CustomUser'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+
+MEDIA_ROOT = os.path.abspath(os.path.join(BASE_DIR, 'hajni_courses_app', 'media'))
+MEDIA_URL = '/media/'
+
+
+# logging
+
+LOGGING_CONFIG = None
+email_config = load_config().get('hajni_courses_email', {})
+
+SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', email_config.get('sendgrid_api_key'))
+EMAIL_HOST = 'smtp.sendgrid.net'
+EMAIL_HOST_USER = 'apikey'  # this is exactly the value 'apikey'
+EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_SUBJECT_PREFIX = 'Képzés Mindenkinek! - '
+if email_config.get('admins') and email_config.get('sender'):
+    DEFAULT_FROM_EMAIL = email_config.get('sender')
+    ADMINS = [(name, email) for name, email in email_config.get('admins').items()]
+    SERVER_EMAIL = email_config.get('sender')
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "generic": {
+            "format": "{asctime} {levelname} {module} {filename} {lineno} {message}",
+            "style": "{",
+        },
+    },
+    "handlers": {
+        "file": {
+            "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": "logs/general.log",
+            "formatter": "generic",
+        },
+        "mail_admins": {
+            "level": "WARNING",
+            "class": "django.utils.log.AdminEmailHandler",
+            "include_html": True,
+            "formatter": "generic",
+        },
+    },
+    "loggers": {
+        "hajni_courses_logger": {
+            "handlers": ["file", "mail_admins"],
+            "level": "INFO",
+            "propagate": True,
+        },
+    },
+}
+
+logging.config.dictConfig(LOGGING)

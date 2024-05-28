@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="hu">
+
+    {% load i18n %}
+    {% load static %}
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <link rel="stylesheet" media="all" href="{% static 'style/style.css' %}">
+        <link rel="icon" type="image/x-icon" href="{% static 'logo.jpg' %}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/hajni_courses_app.js' %}"></script>
+
+        <title>{% trans 'Képzés Mindenkinek' %}</title>
+    </head>
+
+    <body>
+
+        <div id="container">
+
+            <div id="header">
+                <div id="header_left">
+                    <table>
+                        <tr>
+                            <td>
+                                <img id="logo_image" src="{% static 'logo.jpg' %}">
+                            </td>
+                            <td>
+                                <p id="logo_text">{% trans 'Képzés Mindenkinek' %}</p>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+
+            <div id="topnav">
+                <a id="nav_home" class="menu_item" href="{% url 'home' %}">{% trans 'Kezdőlap' %}</a>
+                <a id="nav_pensioner_courses" class="menu_item" href="{% url 'pensioner_courses' %}">{% trans 'Nyugdíjas Képzések' %}</a>
+                <a id="nav_general_courses" class="menu_item" href="{% url 'general_courses' %}">{% trans 'Általános Képzések' %}</a>
+                {% if user.is_authenticated %}
+                <div id="user_dropdown" class="menu_item_right">
+                    <button id="user_dropdown_button" class="dropdown_button">{% trans 'Profilom' %}</button>
+                    <div id="user_dropdown_content">
+                        <p id="hi_username">{% blocktranslate with username=user.username %}Szia {{ username }}!{% endblocktranslate %}</p>
+                        <a id="nav_personal_data" href="{% url 'personal_data' %}">{% trans 'Személyes adatok' %}</a>
+                        <a href="{% url 'change_password' %}">{% trans 'Jelszó megváltoztatása' %}</a>
+                        <a>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button id="logout_button" type="submit">{% trans 'Kijelentkezés' %}</button>
+                        </form>
+                        </a>
+                    </div>
+                </div>
+                {% else %}
+                <a id="nav_login" class="menu_item_right" href="{% url 'login' %}">{% trans 'Bejelentkezés' %}</a>
+                <a id="nav_signup" class="menu_item_right" href="{% url 'signup' %}">{% trans 'Regisztráció' %}</a>
+                {% endif %}
+            </div>
+
+            {% block 'content' %}
+            {% endblock %}
+
+            <div id="footer">
+                <footer>Copyright &copy; <script>document.write(new Date().getFullYear())</script> {% trans 'Minden Jog Fenntartva' %}</footer>
+            </div>
+
+        </div>
+
+    </body>
+
+</html>

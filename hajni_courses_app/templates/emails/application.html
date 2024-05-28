@@ -1,0 +1,18 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktranslate with first_name=first_name last_name=last_name age=age address=address email=email phone_number=phone_number experience=experience course=course %}
+Szia!
+<br><br>
+Új jelentkezés érkezett:<br>
+Tanfolyam: {{ course }}<br>
+Családnév: {{ last_name }}<br>
+Keresztnév: {{ first_name }}<br>
+Kor: {{ age }}<br>
+Cím: {{ address }}<br>
+E-mail: {{ email }}<br>
+Telefonszám: {{ phone_number }}<br>
+Tapasztalat: {{ experience }}<br>
+<br>
+Üdvözlettel.
+{% endblocktranslate %}
+{% endautoescape %}

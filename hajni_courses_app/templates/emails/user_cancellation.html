@@ -1,0 +1,11 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktranslate with username=username %}
+Szia {{ username }}!
+<br><br>
+Tájékoztatunk, hogy a fiókodat deaktiváltuk.
+<br><br>
+Üdvözlettel,<br>
+Képzés Mindenkinek!
+{% endblocktranslate %}
+{% endautoescape %}

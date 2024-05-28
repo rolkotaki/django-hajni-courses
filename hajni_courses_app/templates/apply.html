@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+{% load i18n %}
+
+<div id="content_wrapper">
+
+<div class="content content_apply">
+    
+    <div class="content_form content_apply_form">
+        <p class="page_title">{% trans 'Jelentkezés' %}</p>
+        <form class="apply_form" method="POST" novalidate>
+            {% csrf_token %}
+            {% for field in form %}
+                <p>
+                    {{ field.label_tag }} <br> {{ field }}
+                    {% if field.errors %}
+                    <ul class="error_list">
+                        {% for error in field.errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                </p>
+            {% endfor %}
+            <div class="form_buttons">
+                <input class="a_button green_button" type="submit" value="{% trans 'Jelentkezek' %}" />
+                <a class="a_button grey_button" href="{% url 'course' slug=course.slug %}">{% trans 'Vissza' %}</a>
+            </div>
+        </form>
+
+        <div class="form_success_message">
+            {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    {{ message }}
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}

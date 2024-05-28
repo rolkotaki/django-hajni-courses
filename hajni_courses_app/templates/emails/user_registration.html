@@ -1,0 +1,16 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktranslate with username=username %}
+Szia {{ username }}!
+<br><br>
+Üdvözlünk az Emma Kutyakozmetika Szalon nevében.<br>
+A regisztrációd megerősítéséhez és a fiókod aktiválásához kérlek kattints a következő linkre:<br>
+{% endblocktranslate %}
+<a href="{{ protocol }}://{{ domain }}{% url 'activate_account' uidb64=uid token=token %}">
+    {{ protocol }}://{{ domain }}{% url 'activate_account' uidb64=uid token=token %}</a>
+<br><br>
+{% blocktranslate %}
+Üdvözlettel,<br>
+Képzés Mindenkinek!
+{% endblocktranslate %}
+{% endautoescape %}
