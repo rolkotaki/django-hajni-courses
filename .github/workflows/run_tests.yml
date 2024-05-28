@@ -1,0 +1,54 @@
+name: Run Tests
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - develop
+      - master
+  pull_request:
+    branches:
+      - develop
+      - master
+
+jobs:
+  run_tests:
+    runs-on: ubuntu-latest
+    env:
+      DB_NAME: hajni_courses_website
+      DB_TEST_NAME: hajni_courses_website_test
+      DB_USER: hajni_courses_user
+      DB_PASSWORD: yoursecretpassword
+      DB_HOST: localhost
+      DB_PORT: 5432
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_DB: ${{ env.DB_NAME }}
+          POSTGRES_USER: ${{ env.DB_USER }}
+          POSTGRES_PASSWORD: ${{ env.DB_PASSWORD }}
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready 
+          --health-interval 10s 
+          --health-timeout 5s 
+          --health-retries 5
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.12"
+      - name: Install requirements
+        run: |
+          pip install -r requirements.txt
+      - name: Run tests
+        run: |
+          coverage run manage.py test
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
