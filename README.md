@@ -1,5 +1,6 @@
 # Django Hajni Courses
 [![Run Tests](https://github.com/rolkotaki/django-hajni-courses/actions/workflows/run_tests.yml/badge.svg)](https://github.com/rolkotaki/django-hajni-courses/actions/workflows/run_tests.yml)
+[![codecov](https://codecov.io/gh/rolkotaki/django-hajni-courses/graph/badge.svg?token=8OETE8FHJJ)](https://codecov.io/gh/rolkotaki/django-hajni-courses)
 <br><br>Website for a teacher giving online courses.
 
 ## Description
