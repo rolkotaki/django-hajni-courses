@@ -280,6 +280,6 @@ def apply(request, slug):
                                 }
             course.send_application(application_data=application_data)
             messages.success(request, _("Jelentkezésed sikeres volt."))
-            return redirect('course', slug=course.slug)
+            return redirect('apply', slug=course.slug)
         form = ApplyForm(request.POST)
         return render(request, "apply.html", {'form': form, 'course': course})

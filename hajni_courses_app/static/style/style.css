@@ -352,7 +352,7 @@ html, body {
   box-shadow: 0 0 5px 0 #007bff;
 }
 
-.login_signup_errors {
+.login_signup_errors, .form_errors {
   color: red;
   text-align: center;
   padding-top: 20px;

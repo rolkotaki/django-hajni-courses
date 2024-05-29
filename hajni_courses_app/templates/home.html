@@ -31,6 +31,15 @@
                         {% endfor %}
                     {% endif %}
                 </div>
+                <div class="form_errors">
+                    {% if messages %}
+                        {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            {{ message }}
+                        {% endif %}
+                        {% endfor %}
+                    {% endif %}
+                </div>
             </td>
         </tr>
     </table>
