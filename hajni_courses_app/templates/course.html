@@ -10,9 +10,9 @@
 <div class="content content_course">
 
     <div class="course">
-        <p class="course_name">{{ course.name }}</p>
+        <p class="course_name">{{ course.name|title }}</p>
         <p class="course_desc">{{ course.duration }}</p>
-        <p class="course_price">{{ course.price }} Ft</p>
+        <p class="course_price">{{ course.price|format_number }} Ft</p>
         <p class="course_desc"><br>A képzés során a következőket fogod megtanulni:</p>
         <ul class="course_box_desc" style="list-style-type: '&#9786; ';">
                 {% for item in course.description|split_by_star %}

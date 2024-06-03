@@ -1,6 +1,6 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import RegexValidator
+from django.contrib.auth.forms import UserCreationForm, UsernameField
+from django.core.validators import RegexValidator, MinValueValidator
 from django.utils.translation import gettext_lazy as _
 
 from .models import CustomUser
@@ -12,18 +12,44 @@ class LoginForm(forms.Form):
     Login form class.
     """
     username = forms.CharField(required=True, max_length=150, label=_('Felhasználónév'),
-                               widget=forms.TextInput(attrs={'autofocus': True}))
-    password = forms.CharField(max_length=50, widget=forms.PasswordInput, label=_('Jelszó'))
+                               widget=forms.TextInput(attrs={'autofocus': True}),
+                               error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    password = forms.CharField(max_length=50, widget=forms.PasswordInput, label=_('Jelszó'),
+                               error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
 
 
 class SignUpForm(UserCreationForm):
     """
     SignUp form class.
     """
-    last_name = forms.CharField(required=True, max_length=150, label=_('Családnév'))
+    # Workaround to get these labels and messages in Hungarian. Strange, because for other messages it worked,
+    # for example the length of the password. Until finding a nicer solution, leaving this as a workaround.
+    error_messages = {
+        "password_mismatch": _("A két jelszó nem egyezik!"),
+    }
+    username = UsernameField(label=_("Felhasználónév"), error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    password1 = forms.CharField(
+        label=_("Jelszó"),
+        strip=False,
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'}
+    )
+    password2 = forms.CharField(
+        label=_("Jelszó megerősítése"),
+        widget=forms.PasswordInput(attrs={"autocomplete": "new-password"}),
+        strip=False,
+        error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'}
+    )
+    last_name = forms.CharField(required=True, max_length=150, label=_('Családnév'),
+                                widget=forms.TextInput(attrs={'autofocus': True}),
+                                error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
     first_name = forms.CharField(required=True, max_length=150, label=_('Keresztnév'),
-                                 widget=forms.TextInput(attrs={'autofocus': True}))
-    email = forms.EmailField(required=True, max_length=254, widget=forms.EmailInput(attrs={'class': 'validate', }))
+                                 error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    email = forms.EmailField(required=True, max_length=254, widget=forms.EmailInput(attrs={'class': 'validate', }),
+                             error_messages={
+                                 'required': 'Ennek a mezőnek a megadása kötelező.',
+                                 'invalid': 'Adjon meg egy érvényes email címet!',
+                             })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
@@ -37,10 +63,16 @@ class PersonalDataForm(forms.Form):
     """
     Personal Data form class.
     """
-    last_name = forms.CharField(required=True, max_length=150, label=_('Családnév'))
+    last_name = forms.CharField(required=True, max_length=150, label=_('Családnév'),
+                                widget=forms.TextInput(attrs={'autofocus': True}),
+                                error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
     first_name = forms.CharField(required=True, max_length=150, label=_('Keresztnév'),
-                                 widget=forms.TextInput(attrs={'autofocus': True}))
-    email = forms.EmailField(required=True, max_length=254, widget=forms.EmailInput(attrs={'class': 'validate', }))
+                                 error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    email = forms.EmailField(required=True, max_length=254, widget=forms.EmailInput(attrs={'class': 'validate', }),
+                             error_messages={
+                                 'required': 'Ennek a mezőnek a megadása kötelező.',
+                                 'invalid': 'Adjon meg egy érvényes email címet!',
+                             })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
@@ -54,17 +86,28 @@ class ApplyForm(forms.Form):
     """
     Application form class.
     """
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'last_name', 'name': 'last_name'}),
-                                label=_('Családnév'), required=True)
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'first_name', 'name': 'first_name'}),
-                                 label=_('Keresztnév'), required=True)
-    age = forms.IntegerField(widget=forms.NumberInput(attrs={'id': 'age', 'name': 'age', 'autofocus': True}),
-                             label=_('Kor'), required=True)
-    address = forms.CharField(widget=forms.TextInput(attrs={'id': 'address', 'name': 'address'}),
-                              label=_('Cím (település)'), required=False)
-    email = forms.CharField(widget=forms.EmailInput(attrs={'id': 'email', 'name': 'email'}),
-                            label=_('E-mail'), required=True)
-    phone_number = forms.CharField(widget=forms.TextInput(attrs={'id': 'phone_number', 'name': 'phone_number'}),
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'last_name', 'name': 'last_name',
+                                                              'class': 'user_form_text_input'}),
+                                label=_('Családnév'), required=True,
+                                error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'first_name', 'name': 'first_name',
+                                                               'class': 'user_form_text_input'}),
+                                 label=_('Keresztnév'), required=True,
+                                 error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    age = forms.IntegerField(widget=forms.NumberInput(attrs={'id': 'age', 'name': 'age', 'autofocus': True,
+                                                             'class': 'user_form_text_input'}),
+                             label=_('Kor'), required=True, validators=[MinValueValidator(1)],
+                             error_messages={
+                                 'required': 'Ennek a mezőnek a megadása kötelező.',
+                                 'min_value': 'Adjon meg egy pozitív egész számot!',
+                             })
+    address = forms.CharField(widget=forms.TextInput(attrs={'id': 'address', 'name': 'address',
+                                                            'class': 'user_form_text_input'}),
+                              label=_('Cím (település)'), required=True,
+                              error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
+    phone_number = forms.CharField(widget=forms.TextInput(attrs={'id': 'phone_number', 'name': 'phone_number',
+                                                                 'placeholder': 'Pl.: +36201112222',
+                                                                 'class': 'user_form_text_input'}),
                                    required=False,
                                    label=_('Telefonszám'),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
@@ -73,5 +116,5 @@ class ApplyForm(forms.Form):
                                                               'placeholder': _('Kérjük írja le számítógépes ismereteit ...'),
                                                               'id': 'experience', 'name': 'experience',
                                                               'class': 'text_input'}),
-                                 required=True,
+                                 required=False,
                                  label=_('Számítógépes tapasztalat'))

@@ -12,7 +12,7 @@ from django.utils.translation import gettext_lazy as _
 from hajni_courses.logger import logger
 from hajni_courses.utils import HajniCoursesEmail
 from hajni_courses_app.utils.constants import PHONE_NUMBER_VALIDATOR, USER_CANCELLATION_EMAIL_SUBJECT, \
-    USER_REGISTRATION_EMAIL_SUBJECT, CALLBACK_EMAIL_SUBJECT, APPLICATION_EMAIL_SUBJECT
+    USER_REGISTRATION_EMAIL_SUBJECT, CALLBACK_EMAIL_SUBJECT, APPLICATION_EMAIL_SUBJECT, APPLICATION_CONFIRMATION_SUBJECT
 from hajni_courses_app.utils.AccountActivationTokenGenerator import account_activation_token
 
 
@@ -88,6 +88,7 @@ class Course(models.Model):
 
     @staticmethod
     def send_application(application_data):
+        # email to the admin
         superusers_emails = CustomUser.objects.filter(is_superuser=True).values_list('email', flat=True)
         html_message = render_to_string('emails/application.html', {'first_name': application_data['first_name'],
                                                                     'last_name': application_data['last_name'],
@@ -99,5 +100,14 @@ class Course(models.Model):
                                                                     'course': application_data['course']
                                                                     })
         email = HajniCoursesEmail(to=superusers_emails, subject=str(_(APPLICATION_EMAIL_SUBJECT)),
+                                  message=html_message)
+        threading.Thread(target=email.send).start()
+
+        # email to the user
+        html_message = render_to_string('emails/application_confirmation.html',
+                                        {'first_name': application_data['first_name'],
+                                         'course': application_data['course']
+                                         })
+        email = HajniCoursesEmail(to=application_data['email'], subject=str(_(APPLICATION_CONFIRMATION_SUBJECT)),
                                   message=html_message)
         threading.Thread(target=email.send).start()

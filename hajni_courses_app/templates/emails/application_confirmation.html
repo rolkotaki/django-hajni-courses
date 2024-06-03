@@ -1,0 +1,12 @@
+{% load i18n %}
+{% autoescape off %}
+{% blocktranslate with first_name=first_name course=course %}
+Szia {{ first_name }}!
+<br><br>
+Megkaptuk jelentkezésed a(z) <strong>{{ course }}</strong> tanfolyamra, köszönjük.<br>
+Hamarosan kapcsolatba lépünk Önnel.
+<br><br>
+Üdvözlettel,<br>
+Képzés Mindenkinek!
+{% endblocktranslate %}
+{% endautoescape %}

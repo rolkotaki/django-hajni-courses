@@ -273,7 +273,7 @@ def apply(request, slug):
                                 'last_name': form.cleaned_data['last_name'],
                                 'age': form.cleaned_data['age'],
                                 'address': form.cleaned_data['address'],
-                                'email': form.cleaned_data['email'],
+                                'email': request.user.email,
                                 'phone_number': form.cleaned_data['phone_number'],
                                 'experience': form.cleaned_data['experience'],
                                 'course': course.name

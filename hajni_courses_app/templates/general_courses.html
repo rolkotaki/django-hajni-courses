@@ -12,14 +12,16 @@
                 <img src="{% static 'general_courses_image.png' %}">
             </td>
             <td>
-                <h2>{% trans 'IRODAI MUNKÁRA VÁLTANÉK' %}</h2>
-                <p>{% trans 'Cél: Számítógépes alapismeretek fejlesztése, bővítése meghatározott területen' %}</p>
-                <p>{% trans 'Feltétel: számítógépes alapismeretek' %}</p>
-                <p>{% trans 'A képzés során fontos az önálló gyakorlás.' %}</p>
+                <h3 class="course_coloured_text">{% trans 'IRODAI MUNKÁRA VÁLTANÉK' %}</h3>
+                <div class="course_info">
+                    <p>{% trans 'Cél: Számítógépes alapismeretek fejlesztése, bővítése meghatározott területen' %}</p>
+                    <p>{% trans 'Feltétel: számítógépes alapismeretek' %}</p>
+                    <p>{% trans 'A képzés során fontos az önálló gyakorlás.' %}</p>
+                </div>
             </td>
         </tr>
     </table>
-    <h3>&#8681;{% trans 'HAMAROSAN INDULÓ KISCSOPORTOS ONLINE KÉPZÉSEK' %}&#8681;</h3>
+    <h2 class="course_coloured_text">&#8681;{% trans 'HAMAROSAN INDULÓ KISCSOPORTOS ONLINE KÉPZÉSEK' %}&#8681;</h2>
 </div>
 
 <div id="content_wrapper">
@@ -30,7 +32,7 @@
 
     <div class="course_box">
         <a href="{% url 'course' slug=course.slug %}"><span>
-            <p class="course_box_name">{{ course.name|split_by_parenthesis|first }}</p>
+            <p class="course_box_name">{{ course.name|split_by_parenthesis|first|upper }}</p>
             <p class="course_box_duration">{{ course.duration }}</p>
             <ul class="course_box_desc" style="list-style-type: '&#9786; ';">
                 {% for item in course.description|split_by_star %}

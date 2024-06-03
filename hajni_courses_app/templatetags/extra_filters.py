@@ -17,3 +17,8 @@ def split_by_star(value):
 @register.filter(name='split_by_parenthesis')
 def split_by_parenthesis(value):
     return value.split('(')
+
+
+@register.filter(name='format_number')
+def format_number(number):
+    return f"{number:,.0f}"

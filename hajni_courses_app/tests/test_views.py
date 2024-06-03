@@ -575,8 +575,8 @@ class ApplyViewTestCase(TestCase):
         """Tests that the apply view is not available without certain data."""
         self._login()
         self.client.get(reverse('apply', args=(self.course.slug,)))
-        mandatory_fields = ['first_name', 'last_name', 'age', 'email', 'experience']
-        optional_fields = ['address', 'phone_number']
+        mandatory_fields = ['first_name', 'last_name', 'age', 'address']
+        optional_fields = ['experience', 'phone_number']
         post_data = {'first_name': 'first_name',
                      'last_name': 'last_name',
                      'age': 50,

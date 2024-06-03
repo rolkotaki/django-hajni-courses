@@ -58,7 +58,7 @@ html, body {
 }
 
 #topnav {
-  background-color: #1C6EA4;
+  background-color: #85200C;
   overflow: hidden;
   top: 60px;
   left: 0;
@@ -74,12 +74,12 @@ html, body {
 }
 
 #topnav a:hover {
-  background-color: #70A7D1;
+  background-color: #B58484;
   color: white;
 }
 
 #topnav .active_menu {
-  background-color: #70A7D1;
+  background-color: #B58484;
   color: white;
 }
 
@@ -98,7 +98,7 @@ html, body {
 }
 
 #user_dropdown a:hover, #user_dropdown:hover .dropdown_button {
-  background-color: #70A7D1;
+  background-color: #B58484;
   color: white;
 }
 
@@ -200,16 +200,16 @@ html, body {
 .course_box {
   width: 220px;
   min-height: 250px;
-  max-height: 320px;
-  padding: 5px;
-  margin: 5px;
-  border: 1px solid #DFE7ED;
+  max-height: 330px;
+  padding: 0px;
+  margin: 10px;
+  border: 1px solid #85200C;
   border-radius: 0.4rem;
   overflow: hidden;
 }
 
 .course_box:hover {
-  box-shadow: 0 0 10px 0 #007bff;
+  box-shadow: 0 0 10px 0 #85200C;
 }
 
 .course_box a {
@@ -218,12 +218,17 @@ html, body {
 }
 
 .course_box_name {
+  margin: 0px;
+  padding: 10px 5px 5px 5px;
+  height: 24px;
   font-weight: bold;
   font-size: 16px;
   text-align: center;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: white;
+  background-color: #85200C;
 }
 
 .course_box_duration {
@@ -308,10 +313,6 @@ html, body {
 
 .form_buttons input {
   margin-left: 10px;
-}
-
-.apply_form {
-  //width: 520px;
 }
 
 .user_form {
@@ -426,4 +427,13 @@ html, body {
   color: #1C6EA4;
   font-weight: bold;
   font-size: 18px;
+}
+
+.course_coloured_text {
+  color: #85200C;
+}
+
+.course_info {
+  border: 2px solid #85200C;
+  border-radius: 0.4rem;
 }
