@@ -3,7 +3,7 @@
 {% blocktranslate with username=username %}
 Szia {{ username }}!
 <br><br>
-Üdvözlünk az Emma Kutyakozmetika Szalon nevében.<br>
+Üdvözlünk a <strong>Képzés Mindenkinek!</strong> oldalán.<br>
 A regisztrációd megerősítéséhez és a fiókod aktiválásához kérlek kattints a következő linkre:<br>
 {% endblocktranslate %}
 <a href="{{ protocol }}://{{ domain }}{% url 'activate_account' uidb64=uid token=token %}">

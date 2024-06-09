@@ -21,4 +21,4 @@ def split_by_parenthesis(value):
 
 @register.filter(name='format_number')
 def format_number(number):
-    return f"{number:,.0f}"
+    return f"{number:,.0f}".replace(',', '.')

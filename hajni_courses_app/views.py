@@ -258,9 +258,9 @@ def apply(request, slug):
     course = get_object_or_404(Course, slug=slug)
     if request.method == 'GET':
         user_data = {
-            'first_name': request.user.first_name,
-            'last_name': request.user.last_name,
-            'email': request.user.email,
+            # 'first_name': request.user.first_name,
+            # 'last_name': request.user.last_name,
+            # 'email': request.user.email,
             'phone_number': request.user.phone_number
         }
         form = ApplyForm(initial=user_data)
@@ -269,8 +269,8 @@ def apply(request, slug):
     if request.method == 'POST':
         form = ApplyForm(request.POST)
         if form.is_valid():
-            application_data = {'first_name': form.cleaned_data['first_name'],
-                                'last_name': form.cleaned_data['last_name'],
+            application_data = {'first_name': request.user.first_name,
+                                'last_name': request.user.last_name,
                                 'age': form.cleaned_data['age'],
                                 'address': form.cleaned_data['address'],
                                 'email': request.user.email,

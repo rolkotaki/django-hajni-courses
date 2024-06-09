@@ -51,6 +51,9 @@ class HajniCoursesEmail:
         """
         Sends the email.
         """
+        # workaround to make it work
+        import ssl
+        ssl._create_default_https_context = ssl._create_unverified_context
         try:
             if not settings.TEST_MODE:
                 self.__create_api_client()

@@ -51,6 +51,7 @@ class SignUpForm(UserCreationForm):
                                  'invalid': 'Adjon meg egy érvényes email címet!',
                              })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
+                                   widget=forms.TextInput(attrs={'placeholder': 'Pl.: +36201112222'}),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
 
@@ -74,6 +75,7 @@ class PersonalDataForm(forms.Form):
                                  'invalid': 'Adjon meg egy érvényes email címet!',
                              })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
+                                   widget=forms.TextInput(attrs={'placeholder': 'Pl.: +36201112222'}),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
 
@@ -86,14 +88,6 @@ class ApplyForm(forms.Form):
     """
     Application form class.
     """
-    last_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'last_name', 'name': 'last_name',
-                                                              'class': 'user_form_text_input'}),
-                                label=_('Családnév'), required=True,
-                                error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
-    first_name = forms.CharField(widget=forms.TextInput(attrs={'id': 'first_name', 'name': 'first_name',
-                                                               'class': 'user_form_text_input'}),
-                                 label=_('Keresztnév'), required=True,
-                                 error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
     age = forms.IntegerField(widget=forms.NumberInput(attrs={'id': 'age', 'name': 'age', 'autofocus': True,
                                                              'class': 'user_form_text_input'}),
                              label=_('Kor'), required=True, validators=[MinValueValidator(1)],
