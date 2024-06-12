@@ -454,6 +454,10 @@ html, body {
   padding: 8px;
 }
 
+#table_introduction_jobs table {
+  margin: 0px auto;
+}
+
 #table_introduction_jobs table td {
   padding: 3px;
 }
@@ -462,8 +466,12 @@ html, body {
   padding: 5px;
 }
 
-.table_col_border {
-  border-right: 1px dashed;
+.table_introduction_jobs_col_left {
+  display: flex;
+}
+
+.table_introduction_jobs_col_right {
+  border-left: 1px dashed;
 }
 
 #table_introduction_studies td {
