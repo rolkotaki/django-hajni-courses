@@ -13,6 +13,7 @@ urlpatterns = [
     path('felhasznalo-aktivalas/<str:uidb64>/<str:token>', views.activate_account, name='activate_account'),
     path('jelszovaltoztatas', views.CustomPasswordChangeView.as_view(), name='change_password'),
     path('szemelyes-adatok', views.personal_data, name='personal_data'),
+    path('profil-torlese', views.DeleteProfileView.as_view(), name='delete_profile'),
     path('nyugdijas-kepzesek', views.PensionerCoursesListPage.as_view(), name='pensioner_courses'),
     path('altalanos-kepzesek', views.GeneralCoursesListPage.as_view(), name='general_courses'),
     path('kepzes/<slug:slug>', views.CoursePage.as_view(), name='course'),

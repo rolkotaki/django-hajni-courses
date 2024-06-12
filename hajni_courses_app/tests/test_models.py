@@ -1,8 +1,6 @@
-from django.core.exceptions import ValidationError as django_ValidationError
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.db.utils import Error
-from django.db import models
 from unittest.mock import Mock, patch
 from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
@@ -37,6 +35,12 @@ class ModelsTestCase(TestCase):
                 cu.username = 'username'
                 return_value = cu.cancel_user()
         self.assertFalse(return_value)
+
+    def test_03_customuser_delete_profile_error(self):
+        """Tests the user profile deletion static method returns False when an error happens.
+        Here we make it fail by sending an incorrect request object."""
+        request = 'should_be_a_request_object'
+        self.assertFalse(CustomUser.delete_user_profile(request))
 
 
 class ActivateAccountTestCase(TestCase):

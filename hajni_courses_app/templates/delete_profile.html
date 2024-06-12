@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block 'content' %}
+
+{% load i18n %}
+{% load static %}
+
+<div id="content_wrapper">
+
+<div id="div_delete_profile">
+    <p>{% trans 'Profilod törlése után nem tudsz többet bejelentkezni az oldalra, valamint minden személyes adatod törlődik a rendszerből.' %}</p>
+    <form method="POST" novalidate>
+        {% csrf_token %}
+        <input name="delete_profile" class="a_button red_button" type="submit" value="{% trans 'Profil törlése' %}" onclick="return confirm('{% trans 'Biztosan szeretnéd törölni a profilod?' %}');"/>
+    </form>
+
+    <div class="form_errors">
+        {% if messages %}
+            {% for message in messages %}
+            {% if message.tags == 'error' %}
+                {{ message }}
+            {% endif %}
+            {% endfor %}
+        {% endif %}
+    </div>
+</div>
+
+</div>
+
+{% endblock %}

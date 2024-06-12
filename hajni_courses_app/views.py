@@ -168,6 +168,26 @@ class CustomPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     login_url = 'login'
 
 
+class DeleteProfileView(LoginRequiredMixin, TemplateView):
+    """
+    View class for deleting the user profile.
+    """
+    template_name = "delete_profile.html"
+    login_url = 'login'
+
+    def post(self, request, *args, **kwargs):
+        """
+        Post method to delete the user profile.
+        """
+        if request.POST.get('delete_profile', None):
+            if CustomUser.delete_user_profile(request):
+                return redirect('home')
+            else:
+                messages.error(request, _("Hiba történt profilod törlése közben. Lépj kapcsolatba velünk."))
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+
 class PensionerCoursesListPage(TemplateView):
     """
     View class for the pensioner course list.

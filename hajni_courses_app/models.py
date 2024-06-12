@@ -1,7 +1,9 @@
 import threading
 from django.db import models
 from django.db.utils import Error
+from django.contrib.auth import logout
 from django.contrib.auth.models import AbstractUser
+from django.contrib.sessions.models import Session
 from django.core.validators import RegexValidator
 from django.template.loader import render_to_string
 from django.utils.text import slugify
@@ -31,6 +33,23 @@ class CustomUser(AbstractUser):
         email = HajniCoursesEmail(to=superusers_emails, subject=str(_(CALLBACK_EMAIL_SUBJECT)),
                                   message=html_message)
         threading.Thread(target=email.send).start()
+
+    @staticmethod
+    def delete_user_profile(request) -> bool:
+        try:
+            user = request.user
+            # log out the user from all sessions
+            all_sessions = Session.objects.filter(session_key__in=[s.session_key for s in Session.objects.all() if
+                                                                   s.get_decoded().get('_auth_user_id') == str(user.id)])
+            for session in all_sessions:
+                session.delete()
+            # log out the current session
+            logout(request)
+            # delete the user
+            user.delete()
+            return True
+        except:
+            return False
 
     def send_activation_link(self, domain: str, protocol: str):
         """

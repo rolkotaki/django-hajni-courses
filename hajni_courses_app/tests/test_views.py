@@ -1,18 +1,11 @@
 import math
-import os
 import copy
 import re
-import datetime
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
-from django.conf import settings
-from django.core.files.uploadedfile import SimpleUploadedFile
-from django.utils.translation import gettext as _
-from django.contrib import messages
-from unittest.mock import Mock, patch
+from unittest.mock import patch
 
-import hajni_courses_app.utils.constants
 from hajni_courses_app.models import CustomUser, Course
 from hajni_courses_app.utils.constants import COURSES_PER_PAGE, PAGINATION_PAGES
 
@@ -22,10 +15,13 @@ class BaseViewTestCase(TestCase):
     Test cases for the base view.
     """
 
-    def _login(self):
-        """Logs in the superuser or a normal user."""
+    def _login(self, admin=False):
+        """Logs in a superuser or a normal user."""
         self.client = Client()
-        self.user = CustomUser.objects.create_user(username='user', password='test_password')
+        if admin:
+            self.user = CustomUser.objects.create_superuser(username='admin', password='admin_password')
+        else:
+            self.user = CustomUser.objects.create_user(username='user', password='test_password')
         self.client.force_login(user=self.user)
 
     def test_01_signup_displayed_when_not_logged_in(self):
@@ -78,6 +74,29 @@ class BaseViewTestCase(TestCase):
         pattern = r'<button id="user_dropdown_button" class="dropdown_button">Profilom</button>'
         match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
         self.assertIsNotNone(match)
+
+    def test_07_delete_profile_displayed_only_when_normal_user_logged_in(self):
+        """Tests that the login option is displayed when user is not logged in."""
+        # not logged
+        response = self.client.get(reverse('home'))
+        html_content = response.content.decode('utf-8')
+        pattern = r'<a id="nav_delete_profile"(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNone(match)
+        # logged in as normal user
+        self._login()
+        response = self.client.get(reverse('home'))
+        html_content = response.content.decode('utf-8')
+        pattern = r'<a id="nav_delete_profile"(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNotNone(match)
+        # logged in as staff user
+        self._login(admin=True)
+        response = self.client.get(reverse('home'))
+        html_content = response.content.decode('utf-8')
+        pattern = r'<a id="nav_delete_profile"(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNone(match)
 
 
 class HomeTestCase(TestCase):
@@ -272,6 +291,47 @@ class PersonalDataTestCase(TestCase):
         self.assertContains(response, '<div class="form_success_message">')
         self.assertContains(response, "Az adataidat sikeresen frissítettük és küldtünk egy emailt, hogy meg tudd "
                                       "erősíteni az új email címedet.")
+
+
+class DeleteProfileTestCase(TestCase):
+    """
+    Test cases for the Delete Profile view.
+    """
+
+    def _login(self):
+        """Logs in a normal user."""
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='user', password='test_password',
+                                                   phone_number='0036301234567')
+        self.client.force_login(user=self.user)
+
+    def test_01_delete_profile_not_displayed_when_not_logged_in(self):
+        """Tests that delete profile view is not displayed when user is not logged in."""
+        response = self.client.get(reverse('delete_profile'))
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertRedirects(response, reverse('login') + '?next=' + reverse('delete_profile'))
+
+    def test_02_delete_profile_rendering(self):
+        """Tests that the delete profile view is rendered successfully and the correct template is used."""
+        self._login()
+        response = self.client.get(reverse('delete_profile'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTemplateUsed(response, 'delete_profile.html')
+
+    def test_03_delete_profile_error(self):
+        """Tests when an error happens during deleting the user profile."""
+        self._login()
+        with patch.object(CustomUser, 'delete_user_profile', return_value=False):
+            response = self.client.post(reverse('delete_profile'), {'delete_profile': 'delete_profile'}, follow=True)
+        self.assertContains(response, 'Hiba történt profilod törlése közben. Lépj kapcsolatba velünk.')
+
+    def test_04_delete_profile(self):
+        """Tests deleting the user profile."""
+        self._login()
+        response = self.client.post(reverse('delete_profile'), {'delete_profile': 'delete_profile'}, follow=False)
+        self.assertEqual(response.status_code, status.HTTP_302_FOUND)
+        self.assertRedirects(response, reverse('home'))
+        self.assertEqual(CustomUser.objects.count(), 0)
 
 
 class CourseViewTestCase(TestCase):

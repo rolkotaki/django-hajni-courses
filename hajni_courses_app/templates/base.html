@@ -46,6 +46,9 @@
                         <p id="hi_username">{% blocktranslate with username=user.username %}Szia {{ username }}!{% endblocktranslate %}</p>
                         <a id="nav_personal_data" href="{% url 'personal_data' %}">{% trans 'Személyes adatok' %}</a>
                         <a href="{% url 'change_password' %}">{% trans 'Jelszó megváltoztatása' %}</a>
+                        {% if not user.is_staff %}
+                            <a id="nav_delete_profile" href="{% url 'delete_profile' %}">{% trans 'Profilom törlése' %}</a>
+                        {% endif %}
                         <a>
                         <form action="{% url 'logout' %}" method="post">
                             {% csrf_token %}

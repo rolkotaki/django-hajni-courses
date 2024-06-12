@@ -379,6 +379,12 @@ html, body {
   border: 2px solid #33b249;
 }
 
+.red_button {
+  background-color: #f44336;
+  color: white;
+  border: 2px solid #f44336;
+}
+
 .grey_button {
   background-color: grey;
   color: white;
@@ -388,6 +394,11 @@ html, body {
 .green_button:hover, .green_button:active {
   background-color: white;
   color: #33b249;
+}
+
+.red_button:hover, .red_button:active {
+  background-color: white;
+  color: #f44336;
 }
 
 .grey_button:hover, .grey_button:active {
@@ -481,4 +492,8 @@ html, body {
 
 #table_introduction_publications td {
   padding: 8px;
+}
+
+#div_delete_profile {
+  margin: 50px auto 0px auto;
 }
