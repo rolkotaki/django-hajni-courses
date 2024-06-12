@@ -149,11 +149,11 @@ html, body {
   margin: 20px auto 0px auto;
 }
 
-#home_div table {
+#home_div #table_contact {
   margin: 0 auto;
 }
 
-#home_div table td {
+#home_div #table_contact td {
   padding: 0px 20px 0px 20px;
 }
 
@@ -436,4 +436,41 @@ html, body {
 .course_info {
   border: 2px solid #85200C;
   border-radius: 0.4rem;
+}
+
+.table_introduction {
+  width: 700px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.td_introduction_title {
+  background-color: #85200C;
+  color: white;
+  font-weight: bold;
+  font-variant-caps: small-caps;
+  font-size: 18px;
+  padding: 8px;
+}
+
+#table_introduction_jobs table td {
+  padding: 3px;
+}
+
+#table_introduction_jobs table th {
+  padding: 5px;
+}
+
+.table_col_border {
+  border-right: 1px dashed;
+}
+
+#table_introduction_studies td {
+  padding: 8px;
+  border-bottom: 1px dashed;
+}
+
+#table_introduction_publications td {
+  padding: 8px;
 }
