@@ -497,3 +497,7 @@ html, body {
 #div_delete_profile {
   margin: 50px auto 0px auto;
 }
+
+#privacy_policy {
+  margin-top: 25px;
+}

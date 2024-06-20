@@ -215,6 +215,7 @@ class SignUpTestCase(TestCase):
             'username': 'test_user',
             'password1': 'AldPoE672@8',
             'password2': 'AldPoE672@8',
+            'privacy_policy': 'accepted'
         }
 
     def test_01_signup_rendering(self):
@@ -233,7 +234,7 @@ class SignUpTestCase(TestCase):
 
     def test_03_empty_signup_fields(self):
         """Tests for each field when it is empty when trying to sign up."""
-        for field in ['first_name', 'last_name', 'email', 'username', 'password1', 'password2']:
+        for field in ['first_name', 'last_name', 'email', 'username', 'password1', 'password2', 'privacy_policy']:
             signup_attr_copy = copy.deepcopy(self.signup_attr)
             signup_attr_copy[field] = ''
             response = self.client.post(reverse('signup'), signup_attr_copy)
@@ -660,3 +661,15 @@ class ApplyViewTestCase(TestCase):
             self.assertNotContains(response, '<ul class="error_list">')
             self.assertNotContains(response, 'Ennek a mezőnek a megadása kötelező.')
             self.assertContains(response, 'Jelentkezésed sikeres volt.')
+
+
+class PrivacyNoticePageViewTestCase(TestCase):
+    """
+    Test cases for the Privacy Policy view.
+    """
+
+    def test_01_privacy_policy_rendering(self):
+        """Tests that the Privacy Policy view is rendered successfully and the correct template is used."""
+        response = self.client.get(reverse('privacy_notice'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTemplateUsed(response, 'privacy_notice.html')

@@ -7,6 +7,9 @@ from .models import CustomUser
 from hajni_courses_app.utils.constants import PHONE_NUMBER_VALIDATOR
 
 
+PHONE_NUMBER_PLACEHOLDER = 'Pl.: +36201234567'
+
+
 class LoginForm(forms.Form):
     """
     Login form class.
@@ -51,9 +54,11 @@ class SignUpForm(UserCreationForm):
                                  'invalid': 'Adjon meg egy érvényes email címet!',
                              })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
-                                   widget=forms.TextInput(attrs={'placeholder': 'Pl.: +36201112222'}),
+                                   widget=forms.TextInput(attrs={'placeholder': PHONE_NUMBER_PLACEHOLDER}),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
+    privacy_policy = forms.BooleanField(required=True,
+                                        error_messages={'required': 'Az Adatkezelési tájékoztató elfogadása kötelező.'})
 
     class Meta:
         model = CustomUser
@@ -75,7 +80,7 @@ class PersonalDataForm(forms.Form):
                                  'invalid': 'Adjon meg egy érvényes email címet!',
                              })
     phone_number = forms.CharField(required=False, max_length=20, label=_('Telefonszám'),
-                                   widget=forms.TextInput(attrs={'placeholder': 'Pl.: +36201112222'}),
+                                   widget=forms.TextInput(attrs={'placeholder': PHONE_NUMBER_PLACEHOLDER}),
                                    validators=[RegexValidator(regex=PHONE_NUMBER_VALIDATOR,
                                                               message=_('Adjon meg egy érvényes telefonszámot!'))])
 
@@ -100,7 +105,7 @@ class ApplyForm(forms.Form):
                               label=_('Cím (település)'), required=True,
                               error_messages={'required': 'Ennek a mezőnek a megadása kötelező.'})
     phone_number = forms.CharField(widget=forms.TextInput(attrs={'id': 'phone_number', 'name': 'phone_number',
-                                                                 'placeholder': 'Pl.: +36201112222',
+                                                                 'placeholder': PHONE_NUMBER_PLACEHOLDER,
                                                                  'class': 'user_form_text_input'}),
                                    required=False,
                                    label=_('Telefonszám'),

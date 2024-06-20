@@ -303,3 +303,10 @@ def apply(request, slug):
             return redirect('apply', slug=course.slug)
         form = ApplyForm(request.POST)
         return render(request, "apply.html", {'form': form, 'course': course})
+
+
+class PrivacyNoticePage(TemplateView):
+    """
+    View class for the Home page.
+    """
+    template_name = "privacy_notice.html"
