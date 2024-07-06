@@ -310,3 +310,12 @@ class PrivacyNoticePage(TemplateView):
     View class for the Home page.
     """
     template_name = "privacy_notice.html"
+
+    def get_context_data(self, **kwargs):
+        """
+        Overriding the get_context_data method to add the superuser email.
+        """
+        context = super().get_context_data(**kwargs)
+        superusers_emails = CustomUser.objects.filter(is_superuser=True).values_list('email', flat=True)
+        context["superusers_emails"] = '; '.join(superusers_emails)
+        return context
