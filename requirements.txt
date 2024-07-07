@@ -16,3 +16,4 @@ coverage==7.5.3
 urllib3==2.2.2
 requests==2.32.2
 idna==3.7
+gunicorn==22.0.0
