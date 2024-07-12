@@ -8,3 +8,4 @@ docker/postgres_data
 htmlcov
 coverage.xml
 logs/*.log
+.DS_Store
