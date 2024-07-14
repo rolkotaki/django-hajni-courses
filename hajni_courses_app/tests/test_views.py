@@ -228,7 +228,7 @@ class SignUpTestCase(TestCase):
         """Tests a successful signup."""
         response = self.client.post(reverse('signup'), self.signup_attr)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertContains(response, '<div class="form_success_message">')
+        self.assertContains(response, '<div class="form_success_message_top">')
         self.assertContains(response, "A fiókodat sikeresen létrehoztuk, kérlek fejezd be a regisztrációt az "
                                       "emailben küldött aktivációs linkre kattintással.")
 

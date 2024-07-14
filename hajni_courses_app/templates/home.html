@@ -4,48 +4,50 @@
 {% load i18n %}
 {% load static %}
 
-<div id="home_div">
-    <table id="table_contact">
-        <tr>
-            <td>
-                <img id="img_photo" src="{% static 'hajni_image.jpg' %}">
-            </td>
-            <td>
-                <h3>{% trans 'Rácz Hajnalka (oktató)' %}</h3>
-                <p>{% trans 'Elérhetőség: ' %}{{ superusers_emails }}</p>
-                <div>
-                    <form method="POST" novalidate>
-                        {% csrf_token %}
-                        <input name="call_me" class="a_button green_button {% if not user.is_authenticated %}disabled_button{% endif %}" type="submit" value="{% trans 'Hívj Vissza' %}" />
-                    </form>
-                    {% if not user.is_authenticated %}
-                    <p class="italic">{% trans 'Jelentkezz be visszahívás kéréséhez!' %}</p>
+<div class="div_home_header">
+    <div class="div_photo_contact">
+        <div class="center_by_margin">
+            <img id="img_photo" src="{% static 'hajni_image.jpg' %}">
+        </div>
+        <div class="center_by_margin">
+            <h3>{% trans 'Rácz Hajnalka (oktató)' %}</h3>
+            <p>{% trans 'Elérhetőség: ' %}{{ superusers_emails }}</p>
+            <div>
+                <form method="POST" novalidate>
+                    {% csrf_token %}
+                    <input name="call_me" class="a_button green_button {% if not user.is_authenticated %}disabled_button{% endif %}" type="submit" value="{% trans 'Hívj Vissza' %}" />
+                </form>
+                {% if not user.is_authenticated %}
+                <p class="italic">{% trans 'Jelentkezz be visszahívás kéréséhez!' %}</p>
+                {% endif %}
+            </div>
+            <div class="form_success_message">
+                {% if messages %}
+                    {% for message in messages %}
+                    {% if message.tags == 'success' %}
+                        {{ message }}
                     {% endif %}
-                </div>
-                <div class="form_success_message">
-                    {% if messages %}
-                        {% for message in messages %}
-                        {% if message.tags == 'success' %}
-                            {{ message }}
-                        {% endif %}
-                        {% endfor %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+            <div class="form_errors">
+                {% if messages %}
+                    {% for message in messages %}
+                    {% if message.tags == 'error' %}
+                        {{ message }}
                     {% endif %}
-                </div>
-                <div class="form_errors">
-                    {% if messages %}
-                        {% for message in messages %}
-                        {% if message.tags == 'error' %}
-                            {{ message }}
-                        {% endif %}
-                        {% endfor %}
-                    {% endif %}
-                </div>
-            </td>
-        </tr>
-    </table>
+                    {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <div class="center_by_margin">
+        <p>{% trans '2005 óta dolgozom tanárként gimnáziumban, technikumban, általános iskolában. Főbb területem az ügyvitel, mely valamelyest az informatika területét is magában foglalja. Pszichodrámavezetőként az emberek segítése volt a fő célom, mely most az oktatásban valósul meg.' %}</p>
+        <h3>{% trans 'Bízom abban, hogy segítem ezzel mások boldogulását, előrelépését.' %}</h3>
+    </div>
+</div>
 
-    <p>{% trans '2005 óta dolgozom tanárként gimnáziumban, technikumban, általános iskolában. Főbb területem az ügyvitel, mely valamelyest az informatika területét is magában foglalja. Pszichodrámavezetőként az emberek segítése volt a fő célom, mely most az oktatásban valósul meg.' %}</p>
-    <h3>{% trans 'Bízom abban, hogy segítem ezzel mások boldogulását, előrelépését.' %}</h3>
+<div id="home_div">
 
     <table id="table_introduction_jobs" class="table_introduction">
         <tr><td colspan="2" class="td_introduction_title">{% trans 'Oktató / Pedagógus' %}</td></tr>

@@ -97,6 +97,27 @@ html, body {
   margin: 0;
 }
 
+@media only screen and (max-width: 768px) {
+    #topnav a {
+      float: left;
+      color: #f2f2f2;
+      text-align: center;
+      padding: 14px 10px;
+      text-decoration: none;
+      font-size: 1.7vh;
+    }
+
+    .dropdown_button {
+      font-size: 1.7vh;
+      border: none;
+      outline: none;
+      color: #f2f2f2;
+      padding: 14px 10px;
+      background-color: inherit;
+      margin: 0;
+    }
+}
+
 #user_dropdown a:hover, #user_dropdown:hover .dropdown_button {
   background-color: #B58484;
   color: white;
@@ -105,6 +126,8 @@ html, body {
 #user_dropdown_content {
   display: none;
   position: absolute;
+  width: 140px;
+  right: 0;
   background-color: #f9f9f9;
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
@@ -162,21 +185,33 @@ html, body {
   height: auto;
 }
 
-.div_course_header {
+.center_by_margin {
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0px 10px;
+}
+
+.div_home_header, .div_course_header {
   margin: 20px auto 0px auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.div_course_header table td{
-  padding: 0px 50px 0px 50px;
+.div_photo_contact, .div_pensioner_header {
+  margin: 0px auto;
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.div_course_header table{
-  max-width: 800px;
+.div_course_header #pensioner_img {
+  padding: 0px 30px 0px 10px;
+  width: 225px;
+  height: auto;
 }
 
-.div_course_header table td img {
-  padding: 0px 10px 0px 10px;
-  width: 200px;
+.div_course_header #general_img {
+  padding: 0px 20px 0px 20px;
+  width: 225px;
   height: auto;
 }
 
@@ -193,14 +228,10 @@ html, body {
   margin: 20px;
 }
 
-.content_courses {
-  margin-top: 20px;
-}
-
 .course_box {
   width: 220px;
   min-height: 250px;
-  max-height: 330px;
+  max-height: 405px;
   padding: 0px;
   margin: 10px;
   border: 1px solid #85200C;
@@ -249,9 +280,8 @@ html, body {
 }
 
 .course {
-  width: 500px;
-  //height: 280px;
-  padding: 10px;
+  max-width: 500px;
+  padding: 0px 10px 10px 10px;
 }
 
 .course_name, .page_title {
@@ -268,7 +298,6 @@ html, body {
 }
 
 .course_buttons {
-  display: block;
   padding-top: 20px;
 }
 
@@ -297,7 +326,12 @@ html, body {
 }
 
 .content_apply_form {
-  width: 520px;
+  width: 100%;
+  padding: 0px 10px 10px 10px;
+  text-align: left;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 
 .form_buttons {
@@ -320,7 +354,8 @@ html, body {
 }
 
 .user_form_text_input {
-  width: 260px;
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.375rem 0.75rem;
   margin-top: 5px;
   font-size: 1rem;
@@ -332,20 +367,17 @@ html, body {
 }
 
 .text_input {
+  width: 100%;
+  box-sizing: border-box;
   padding: 0.35rem 0.5rem;
   margin-top: 5px;
+  margin-bottom: 10px;
   font-size: 0.8rem;
   line-height: 1.5;
   color: #495057;
   background-clip: padding-box;
   border: 1.5px solid #ced4da;
   border-radius: 0.25rem;
-  width: 160px;
-}
-
-.text_input {
-  width: 500px;
-  margin-bottom: 10px;
 }
 
 .user_form_text_input:focus, .text_input:focus {
@@ -371,6 +403,11 @@ html, body {
   color: green;
   text-align: center;
   padding-top: 20px;
+}
+
+.form_success_message_top {
+  color: green;
+  text-align: center;
 }
 
 .green_button {
@@ -442,11 +479,14 @@ html, body {
 
 .course_coloured_text {
   color: #85200C;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .course_info {
   border: 2px solid #85200C;
   border-radius: 0.4rem;
+  padding: 0px 6px;
 }
 
 .table_introduction {

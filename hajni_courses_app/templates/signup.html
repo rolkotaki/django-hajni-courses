@@ -10,6 +10,16 @@
 
     <div class="content_form">
 
+        <div class="form_success_message_top">
+            {% if messages %}
+                {% for message in messages %}
+                {% if message.tags == 'success' %}
+                    {{ message }}
+                {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+
         <p class="page_title">{% trans 'Regisztráció' %}</p>
         <form class="user_form" method="POST" novalidate>
             {% csrf_token %}
@@ -35,16 +45,6 @@
                 <input class="a_button green_button" type="submit" value="{% trans 'Regisztrálok' %}" />
             </div>
         </form>
-
-        <div class="form_success_message">
-            {% if messages %}
-                {% for message in messages %}
-                {% if message.tags == 'success' %}
-                    {{ message }}
-                {% endif %}
-                {% endfor %}
-            {% endif %}
-        </div>
 
     </div>
 
