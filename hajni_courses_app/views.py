@@ -61,14 +61,16 @@ def sign_up(request):
         form = SignUpForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False
+            # TODO: Sengdrig emails are not working anymore, new solution will be implemented for emails
+            # user.is_active = False
             user.save()
             # sending the email to confirm the registration
-            user.send_activation_link(get_current_site(request).domain,
-                                      'https' if request.is_secure() else 'http')
+            # user.send_activation_link(get_current_site(request).domain,
+            #                           'https' if request.is_secure() else 'http')
             logger.info('New user signed up: {}, {}'.format(user.pk, user.username))
-            messages.success(request, _("A fiókodat sikeresen létrehoztuk, kérlek fejezd be a regisztrációt az "
-                                        "emailben küldött aktivációs linkre kattintással."))
+            # messages.success(request, _("A fiókodat sikeresen létrehoztuk, kérlek fejezd be a regisztrációt az "
+            #                             "emailben küldött aktivációs linkre kattintással."))
+            messages.success(request, _("A fiókodat sikeresen létrehoztuk."))
             return render(request, "signup.html", {'form': form})
         return render(request, "signup.html", {'form': form})
 
@@ -142,19 +144,21 @@ def personal_data(request):
             user.first_name = form.cleaned_data['first_name']
             user.last_name = form.cleaned_data['last_name']
             user.phone_number = form.cleaned_data['phone_number']
-            if user.email != form.cleaned_data['email']:
-                # if the email has changed, we send an activation mail to the user to confirm their new email address
-                user.email = form.cleaned_data['email']
-                user.is_active = False
-                user.save()
-                user.send_activation_link(get_current_site(request).domain,
-                                          'https' if request.is_secure() else 'http')
-                redirect('logout')
-                messages.success(request, _("Az adataidat sikeresen frissítettük és küldtünk egy emailt, hogy meg tudd "
-                                            "erősíteni az új email címedet."))
-            else:
-                user.save()
-                messages.success(request, _("Az adataidat sikeresen frissítettük."))
+            user.email = form.cleaned_data['email']
+            # TODO: Sengdrig emails are not working anymore, new solution will be implemented for emails
+            # if user.email != form.cleaned_data['email']:
+            #     # if the email has changed, we send an activation mail to the user to confirm their new email address
+            #     user.email = form.cleaned_data['email']
+            #     user.is_active = False
+            #     user.save()
+            #     user.send_activation_link(get_current_site(request).domain,
+            #                               'https' if request.is_secure() else 'http')
+            #     redirect('logout')
+            #     messages.success(request, _("Az adataidat sikeresen frissítettük és küldtünk egy emailt, hogy meg tudd "
+            #                                 "erősíteni az új email címedet."))
+            # else:
+            user.save()
+            messages.success(request, _("Az adataidat sikeresen frissítettük."))
             return redirect('personal_data')
         return render(request, "personal_data.html", {'form': form})
 

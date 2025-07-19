@@ -183,6 +183,7 @@ html, body {
 #img_photo {
   width: 250px;
   height: auto;
+  border-radius: 5%;
 }
 
 .center_by_margin {
@@ -332,6 +333,13 @@ html, body {
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
+}
+
+// TODO: remove this
+.apply_form {
+  width: 355px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .form_buttons {
