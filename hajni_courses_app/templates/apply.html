@@ -19,8 +19,8 @@
             {% endif %}
         </div>
 
+        <p class="page_title">{% trans 'Jelentkezés' %}</p>
         <form class="apply_form" method="POST" novalidate>
-            <p class="page_title">{% trans 'Jelentkezés' %}</p>
             {% csrf_token %}
             {% for field in form %}
                 <p>
@@ -39,10 +39,6 @@
                 <a class="a_button grey_button" href="{% url 'course' slug=course.slug %}">{% trans 'Vissza' %}</a>
             </div>
         </form>
-        <!-- TODO: remove this -->
-        <p style="color: red; margin-left: auto; margin-right: auto; text-align: center;">
-            Az e-mail küldés jelenleg nem működik megfelelően, kérjük,<br>jelentkezz közvetlenül a hajni@kepzesmindenkinek.eu e-mail címen.
-        </p>
     </div>
 
 </div>

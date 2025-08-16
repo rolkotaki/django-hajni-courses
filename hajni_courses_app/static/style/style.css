@@ -335,13 +335,6 @@ html, body {
   box-sizing: border-box;
 }
 
-// TODO: remove this
-.apply_form {
-  width: 355px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .form_buttons {
   text-align: center;
   min-width: 280px;

@@ -21,6 +21,8 @@ jobs:
       DB_PASSWORD: yoursecretpassword
       DB_HOST: localhost
       DB_PORT: 5432
+      MAILERSEND_API_KEY: apikey
+      EMAIL_SENDER: testsender@mail.com
     services:
       postgres:
         image: postgres:16

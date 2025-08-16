@@ -46,7 +46,7 @@ ALTER ROLE hajni_courses_user createdb;
 ```
 *Feel free to use a different database and change the database settings in the `settings.py`.*<br>
 
-For emails I use [SendGrid](https://sendgrid.com/), but feel free to use what you prefer and change the settings (and probably code) accordingly.
+For emails I use [MailerSend](https://www.mailersend.com/), but feel free to use what you prefer and change the settings and your code accordingly.
 
 Download the source code and go to the root of the repository.<br>
 
@@ -61,7 +61,7 @@ postgresql_hajni_courses:
   test_db_name: hajni_courses_website_test
 
 hajni_courses_email:
-  sendgrid_api_key: YOUR_API_KEY
+  mailersend_api_key: YOUR_API_KEY
   sender: sender@mail.com
   admins:
     first_admin_name: first_admin@mail.com

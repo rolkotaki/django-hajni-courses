@@ -2,8 +2,11 @@ import os
 import yaml
 from pathlib import Path
 from django.conf import settings
-from sendgrid import SendGridAPIClient
-from sendgrid.helpers.mail import Email, To, Subject, HtmlContent, Mail, SendGridException
+from django.db.models.query import QuerySet
+from mailersend import MailerSendClient, EmailBuilder
+from mailersend.exceptions import MailerSendError
+from mailersend.resources.email import EmailRequest, APIResponse
+from threading import RLock
 
 from .logger import logger
 
@@ -27,39 +30,59 @@ def load_config():
 
 class HajniCoursesEmail:
     """
-    The HajniCoursesEmail objects are emails used by the project, and they have a public send method.
+    Represents an email to be sent via MailerSend.
     To be used instead of the default Django solution.
     """
+    _msc: MailerSendClient = None
+    _msc_lock: RLock = RLock()
+    email_config: dict = load_config().get('hajni_courses_email', {})
 
-    def __init__(self, to, subject, message):
-        self.email_config = load_config().get('hajni_courses_email', {})
-        self.sg = None
-        from_email = Email(os.environ.get('EMAIL_SENDER', self.email_config.get('sender')))
-        to_email = To(to)
-        subject = Subject(subject)
-        content = HtmlContent(message)
-        self.mail = Mail(from_email, to_email, subject, content)
+    def __init__(self, to: str, subject: str, message: str):
+        self.to: str | QuerySet = to
+        self.subject: str = subject
+        self.message: str = message
+        email_builder = (
+            EmailBuilder()
+            .from_email(os.environ.get('EMAIL_SENDER', self.email_config.get('sender')),
+                        settings.EMAIL_FROM_NAME)
+            .subject(self.subject)
+            .html(self.message)
+        )
+        if type(to) is QuerySet:
+            for recipient in to:
+                email_builder.to(str(recipient))
+        else:
+            email_builder.to(str(to))
+        self.email: EmailRequest = email_builder.build()
 
-    def __create_api_client(self):
-        """
-        Creates the Sendgrid API client using the API key.
-        """
-        self.sg = SendGridAPIClient(api_key=os.environ.get('SENDGRID_API_KEY',
-                                                           self.email_config.get('sendgrid_api_key')))
+    @classmethod
+    def _get_client(cls) -> MailerSendClient:
+        """Get or create the MailerSend client."""
+        if cls._msc is None:
+            with cls._msc_lock:
+                if cls._msc is None:
+                    cls._msc = MailerSendClient(api_key=os.environ.get('MAILERSEND_API_KEY',
+                                                                       cls.email_config.get('mailersend_api_key')))
+        return cls._msc
 
-    def send(self):
+    def send(self) -> APIResponse | None:
         """
-        Sends the email.
+        Send the email.
         """
-        # workaround to make it work
-        import ssl
-        ssl._create_default_https_context = ssl._create_unverified_context
         try:
-            if not settings.TEST_MODE:
-                self.__create_api_client()
-                response = self.sg.send(self.mail)
-                return response
+            if settings.TEST_MODE:
+                return None
+            response = self._get_client().emails.send(self.email)
+            return response
+        except MailerSendError as se:
+            logger.error(
+                f"Failed to send email to {self.to} with subject {self.subject} due to MailerSendError: {str(se)}",
+                exc_info=True,
+            )
             return None
-        except SendGridException:
-            logger.error('The email with subject "{}" could not be sent to "{}"'.format(self.mail.subject, self.mail.to))
+        except Exception as e:
+            logger.error(
+                f"Failed to send email to {self.to} with subject {self.subject}: {str(e)}",
+                exc_info=True,
+            )
             return None

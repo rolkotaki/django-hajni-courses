@@ -174,12 +174,8 @@ MEDIA_URL = '/media/'
 LOGGING_CONFIG = None
 email_config = load_config().get('hajni_courses_email', {})
 
-SENDGRID_API_KEY = os.environ.get('SENDGRID_API_KEY', email_config.get('sendgrid_api_key'))
-EMAIL_HOST = 'smtp.sendgrid.net'
-EMAIL_HOST_USER = 'apikey'  # this is exactly the value 'apikey'
-EMAIL_HOST_PASSWORD = SENDGRID_API_KEY
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+MAILERSEND_API_KEY = os.environ.get('MAILERSEND_API_KEY', email_config.get('mailersend_api_key'))
+EMAIL_FROM_NAME = 'Képzés Mindenkinek!'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_SUBJECT_PREFIX = 'Képzés Mindenkinek! - '
 if email_config.get('admins') and email_config.get('sender'):

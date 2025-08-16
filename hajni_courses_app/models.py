@@ -61,7 +61,7 @@ class CustomUser(AbstractUser):
                          'token': account_activation_token.make_token(self),
                          'protocol': protocol}
         html_message = render_to_string('emails/user_registration.html', email_context)
-        email = HajniCoursesEmail(to=[self.email], subject=str(_(USER_REGISTRATION_EMAIL_SUBJECT)),
+        email = HajniCoursesEmail(to=self.email, subject=str(_(USER_REGISTRATION_EMAIL_SUBJECT)),
                                   message=html_message)
         threading.Thread(target=email.send).start()
 

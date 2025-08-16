@@ -104,6 +104,11 @@ class HomeTestCase(TestCase):
     Test cases for the Home view.
     """
 
+    def _create_superuser(self):
+        """Creates a superuser."""
+        self.superuser = CustomUser.objects.create_user(username='superuser', password='test_password',
+                                                        email='superuser@mail.com', is_superuser=True)
+
     def _login(self):
         """Logs in a normal user."""
         self.client = Client()
@@ -142,6 +147,7 @@ class HomeTestCase(TestCase):
     def test_04_send_callback_request(self):
         """Tests sending a callback request from the Home view."""
         self._login()
+        self._create_superuser()
         response = self.client.post(reverse('home'), {'call_me': 'call_me'}, follow=True)
         self.assertContains(response, '<div class="form_success_message"')
         self.assertContains(response, 'Visszahívási kérelmedet elküldtük.')
@@ -229,8 +235,8 @@ class SignUpTestCase(TestCase):
         response = self.client.post(reverse('signup'), self.signup_attr)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertContains(response, '<div class="form_success_message_top">')
-        # self.assertContains(response, "A fiókodat sikeresen létrehoztuk, kérlek fejezd be a regisztrációt az "
-        #                               "emailben küldött aktivációs linkre kattintással.")
+        self.assertContains(response, "A fiókodat sikeresen létrehoztuk, kérlek fejezd be a regisztrációt az "
+                                      "emailben küldött aktivációs linkre kattintással.")
 
     def test_03_empty_signup_fields(self):
         """Tests for each field when it is empty when trying to sign up."""
@@ -290,8 +296,8 @@ class PersonalDataTestCase(TestCase):
         self.client.force_login(user=self.user)
         response = self.client.post(reverse('personal_data'), self.pers_data_attr, follow=True)
         self.assertContains(response, '<div class="form_success_message">')
-        # self.assertContains(response, "Az adataidat sikeresen frissítettük és küldtünk egy emailt, hogy meg tudd "
-        #                               "erősíteni az új email címedet.")
+        self.assertContains(response, "Az adataidat sikeresen frissítettük és küldtünk egy emailt, hogy meg tudd "
+                                      "erősíteni az új email címedet.")
 
 
 class DeleteProfileTestCase(TestCase):
@@ -598,8 +604,14 @@ class ApplyViewTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.user = CustomUser.objects.create_user(username='user', password='test_password')
+        self.user = CustomUser.objects.create_user(username='user', password='test_password',
+                                                   email='user@mail.com')
         self.course = self._create_new_course()
+
+    def _create_superuser(self):
+        """Creates a superuser."""
+        self.superuser = CustomUser.objects.create_user(username='superuser', password='test_password',
+                                                        email='superuser@mail.com', is_superuser=True)
 
     def _login(self):
         """Logs in a normal user."""
@@ -635,6 +647,7 @@ class ApplyViewTestCase(TestCase):
     def test_03_apply_available_only_with_mandatory_fields(self):
         """Tests that the apply view is not available without certain data."""
         self._login()
+        self._create_superuser()
         self.client.get(reverse('apply', args=(self.course.slug,)))
         mandatory_fields = ['age', 'address']
         optional_fields = ['experience', 'phone_number']
