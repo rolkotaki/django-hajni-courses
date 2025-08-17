@@ -37,7 +37,7 @@ class HajniCoursesEmail:
     _msc_lock: RLock = RLock()
     email_config: dict = load_config().get('hajni_courses_email', {})
 
-    def __init__(self, to: str, subject: str, message: str):
+    def __init__(self, to: str | QuerySet, subject: str, message: str):
         self.to: str | QuerySet = to
         self.subject: str = subject
         self.message: str = message
