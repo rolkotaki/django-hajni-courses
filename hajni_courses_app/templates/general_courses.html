@@ -6,19 +6,27 @@
 {% load extra_filters %}
 
 <div class="div_course_header">
-    <div class="center_by_margin">
+    <div class="center_by_margin" style="margin-top: auto; margin-bottom: auto;">
         <img id="general_img" src="{% static 'general_courses_image.png' %}">
     </div>
-    <div class="center_by_margin">
-        <h3 class="course_coloured_text">{% trans 'IRODAI MUNKÁHOZ' %}</h3>
+    <div class="center_by_margin" style="max-width: 650px;">
+        <h3 class="course_coloured_text">{% trans 'HARD SKILLEK AZ IRODAI MUNKÁDHOZ' %}</h3>
         <div class="course_info">
-            <p>{% trans 'Számítógépes alapismeretek fejlesztése, bővítése meghatározott területen' %}</p>
-            <p>{% trans 'Feltétel: számítógépes alapismeretek' %}</p>
-            <p>{% trans 'A képzés során fontos az önálló gyakorlás.' %}</p>
+            <p>
+                {% blocktrans %}
+                A {{ bold_start }}hard skillek{{ bold_end }} fontosak a hatékonysághoz, a kreatív lehetőségekhez, a precíz, pontos és szakszerű feladatmegoldásokhoz. Ezek fejlesztésével segíted a munkaerőpiacon való érvényesülésed.
+                {% endblocktrans %}
+            </p>
+
+            <p>
+                {% blocktrans %}
+                A kurzusok {{ bold_start }}gyakorlatorientáltak{{ bold_end }}, így az itt tanultakat rögtön beépítheted a mindennapi teendőidbe. Ha Te sem tudod pontosan, mire van szükséged a {{ a_start }}hajni@kepzesmindenkinek.eu{{ a_end }} címen jelezd igényed egy ingyenes konzultációra.
+                {% endblocktrans %}
+            </p>
         </div>
     </div>
     <div class="center_by_margin">
-        <h2 class="course_coloured_text">&#8681;{% trans 'KISCSOPORTOS vagy EGYÉNI ONLINE KÉPZÉSEK' %}&#8681;</h2>
+        <h2 class="course_coloured_text">&#8681;{% trans 'KISCSOPORTOS vagy EGYÉNI ÉLŐ ONLINE KÉPZÉSEK' %}&#8681;</h2>
     </div>
 </div>
 

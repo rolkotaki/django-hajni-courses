@@ -37,8 +37,8 @@
 
             <div id="topnav">
                 <a id="nav_home" class="menu_item" href="{% url 'home' %}">{% trans 'Bemutatkozás' %}</a>
-                <a id="nav_pensioner_courses" class="menu_item" href="{% url 'pensioner_courses' %}">{% trans 'Nyugdíjas Képzések' %}</a>
-                <a id="nav_general_courses" class="menu_item" href="{% url 'general_courses' %}">{% trans 'Általános Képzések' %}</a>
+                <a id="nav_pensioner_courses" class="menu_item" href="{% url 'pensioner_courses' %}">{% trans 'Nyugdíjasoknak' %}</a>
+                <a id="nav_general_courses" class="menu_item" href="{% url 'general_courses' %}">{% trans 'Irodai IT' %}</a>
                 {% if user.is_authenticated %}
                 <div id="user_dropdown" class="menu_item_right">
                     <button id="user_dropdown_button" class="dropdown_button">{% trans 'Profilom' %}</button>

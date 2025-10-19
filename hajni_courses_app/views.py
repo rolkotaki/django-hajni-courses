@@ -11,6 +11,7 @@ from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 from hajni_courses.logger import logger
@@ -33,6 +34,10 @@ class HomePage(TemplateView):
         context = super().get_context_data(**kwargs)
         superusers_emails = CustomUser.objects.filter(is_superuser=True).values_list('email', flat=True)
         context["superusers_emails"] = '; '.join(superusers_emails)
+
+        context['bold_start'] = mark_safe('<b>')
+        context['bold_end'] = mark_safe('</b>')
+
         return context
 
     def post(self, request, *args, **kwargs):
@@ -250,6 +255,11 @@ class GeneralCoursesListPage(TemplateView):
         else:
             pages = [i for i in range(page.number - pages_before_after, page.number + pages_before_after + 1)]
         context["pages"] = pages
+
+        context['bold_start'] = mark_safe('<b>')
+        context['bold_end'] = mark_safe('</b>')
+        context['a_start'] = mark_safe('<a href="" style="color: blue;">')
+        context['a_end'] = mark_safe('</a>')
 
         return context
 
