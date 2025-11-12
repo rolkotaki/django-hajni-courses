@@ -1,11 +1,13 @@
 import math
 import copy
+import os
 import re
 from rest_framework import status
 from django.test import TestCase, Client
 from django.urls import reverse
 from unittest.mock import patch
 
+from hajni_courses import settings
 from hajni_courses_app.models import CustomUser, Course
 from hajni_courses_app.utils.constants import COURSES_PER_PAGE, PAGINATION_PAGES
 
@@ -686,3 +688,58 @@ class PrivacyNoticePageViewTestCase(TestCase):
         response = self.client.get(reverse('privacy_notice'))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertTemplateUsed(response, 'privacy_notice.html')
+
+
+class DownloadsTestCase(TestCase):
+    """
+    Test cases for the Downloads view.
+    """
+
+    def _login(self):
+        """Logs in a normal user."""
+        self.client = Client()
+        self.user = CustomUser.objects.create_user(username='user', password='test_password',
+                                                   phone_number='0036301234567')
+        self.client.force_login(user=self.user)
+
+    def test_01_downloads_rendering(self):
+        """Tests that the downloads view is rendered successfully and the correct template is used."""
+        response = self.client.get(reverse('downloads'))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertTemplateUsed(response, 'downloads.html')
+
+    def test_02_downloads_file_groups(self):
+        """Tests that the downloads view is rendered successfully and the file groups and filenames are displayed."""
+        response = self.client.get(reverse('downloads'))
+        html_content = response.content.decode('utf-8')
+
+        base_path = os.path.join(settings.MEDIA_ROOT, "files")
+        if os.path.exists(base_path):
+            for folder_name in os.listdir(base_path):
+                pattern = '<h3>{}</h3>'.format(folder_name.replace('_', ' ').title())
+                match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+                self.assertIsNotNone(match)
+                for filename in os.listdir(os.path.join(base_path, folder_name)):
+                    pattern = '<td class="file_name">{}</td>'.format(filename)
+                    match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+                    self.assertIsNotNone(match)
+
+    def test_03_download_is_disabled_when_not_logged_in(self):
+        """Tests that the download option is not available for users not logged in."""
+        response = self.client.get(reverse('downloads'))
+        html_content = response.content.decode('utf-8')
+        pattern = r'<a class="a_button green_button(.*)disabled_button(.*)"(.*)Letöltés(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNotNone(match)
+
+    def test_04_download_is_enabled_when_logged_in(self):
+        """Tests that the download option is available for users logged in."""
+        self._login()
+        response = self.client.get(reverse('downloads'))
+        html_content = response.content.decode('utf-8')
+        pattern = r'<a class="a_button green_button(.*)disabled_button(.*)"(.*)Letöltés(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNone(match)
+        pattern = r'<a class="a_button green_button(.*)Letöltés(.*)</a>'
+        match = re.search(pattern, html_content, re.DOTALL | re.IGNORECASE)
+        self.assertIsNotNone(match)

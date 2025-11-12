@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block 'content' %}
+
+<div id="content_wrapper">
+  <div class="content content_downloads">
+
+    {% if not user.is_authenticated and file_groups %}
+      <p class="italic">{% trans 'Jelentkezz be a fájlok letöltéséhez!' %}</p>
+    {% endif %}
+
+    {% for group in file_groups %}
+      <div class="file_group">
+        <h3>{{ group.name }}</h3>
+        <table class="download_table">
+          <tbody>
+            {% for file in group.files %}
+              <tr>
+                <td class="file_name">{{ file.name }}</td>
+                <td class="download_cell">
+                  <a class="a_button green_button {% if not user.is_authenticated %}disabled_button{% endif %}" href="{{ file.url }}" download>
+                    {% trans 'Letöltés' %}
+                  </a>
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% endfor %}
+
+    {% if not file_groups %}
+      <p class="italic">{% trans 'Jelenleg nincsenek letölthető anyagok.' %}</p>
+    {% endif %}
+
+  </div>
+</div>
+
+{% endblock %}

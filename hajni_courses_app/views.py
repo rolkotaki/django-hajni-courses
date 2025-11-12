@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.views import PasswordChangeView
@@ -13,6 +14,7 @@ from django.utils.http import urlsafe_base64_decode
 from django.utils.encoding import force_str
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+import os
 
 from hajni_courses.logger import logger
 from hajni_courses_app.utils.AccountActivationTokenGenerator import account_activation_token
@@ -329,3 +331,28 @@ class PrivacyNoticePage(TemplateView):
         superusers_emails = CustomUser.objects.filter(is_superuser=True).values_list('email', flat=True)
         context["superusers_emails"] = '; '.join(superusers_emails)
         return context
+
+
+def downloads_view(request):
+    base_path = os.path.join(settings.MEDIA_ROOT, "files")
+    base_url = os.path.join(settings.MEDIA_URL, "files")
+
+    file_groups = []
+
+    if os.path.exists(base_path):
+        for folder_name in sorted(os.listdir(base_path)):
+            folder_path = os.path.join(base_path, folder_name)
+            if os.path.isdir(folder_path):
+                group_name = folder_name.replace("_", " ").title()
+
+                files = []
+                for file_name in sorted(os.listdir(folder_path)):
+                    file_path = os.path.join(folder_path, file_name)
+                    if os.path.isfile(file_path):
+                        file_url = f"{base_url}/{folder_name}/{file_name}"
+                        files.append({"name": file_name, "url": file_url})
+
+                if files:
+                    file_groups.append({"name": group_name, "files": files})
+
+    return render(request, "downloads.html", {"file_groups": file_groups})

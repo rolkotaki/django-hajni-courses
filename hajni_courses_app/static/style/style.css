@@ -542,3 +542,57 @@ html, body {
 #privacy_policy {
   margin-top: 25px;
 }
+
+.content_downloads {
+  width: 100%;
+  max-width: 700px;
+  margin: 0px 0px auto 0px;
+  padding-top: 15px;
+  padding-left: 20px;
+  text-align: left;
+}
+
+.file_group {
+  margin-bottom: 25px;
+}
+
+.file_group h3 {
+  margin: 15px 0px 8px 0px;
+  color: #85200C;
+  font-size: 18px;
+  font-weight: bold;
+  text-align: left;
+}
+
+.download_table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.download_table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+}
+
+.download_table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.download_table td.file_name {
+  width: auto;
+  text-align: left;
+  word-break: break-word;
+}
+
+.download_table td.download_cell {
+  width: 140px;
+  text-align: right;
+}
+
+@media only screen and (max-width: 600px) {
+  .download_table td.download_cell {
+    width: 110px;
+  }
+}

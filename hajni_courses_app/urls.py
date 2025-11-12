@@ -19,4 +19,5 @@ urlpatterns = [
     path('kepzes/<slug:slug>', views.CoursePage.as_view(), name='course'),
     path('kepzes/<slug:slug>/jelentkezes', views.apply, name='apply'),
     path('adatnyilatkozat', views.PrivacyNoticePage.as_view(), name='privacy_notice'),
+    path('letoltesek', views.downloads_view, name='downloads'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
